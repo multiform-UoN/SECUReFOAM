@@ -1,0 +1,77 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  7
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      setRandomFieldDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// -- Name of the field
+// -- this is read and then use as a (multiplicative) basis
+field K;
+
+// -- Type of random field
+// type gaussian;
+// type logNormal;
+type truncated;
+// type bitruncated;
+// type uniform;
+
+// -- Correlation function
+correlation exponential;
+// correlation gaussian;
+// correlation matern;
+
+// -- Correlation lengths
+Lcorr           (3 0.2 1);
+
+// -- Correlation tolerance (skip high frequencies)
+corrTol         1e-8;
+
+// -- Matern coefficient
+nu              1;
+
+// -- Disable dimensions
+disableY false;
+disableZ true;
+
+// -- Periodic field
+periodic false;
+
+// -- choose if setting mean and variance of the final field
+setFinalStats  false;
+
+// -- Mean and variance
+mu             0;
+sigma          1;
+
+// -- Number of terms in the expansion
+nterms 1;
+
+// -- Number of frequencies in the expansion
+nfreq 20;
+nfreqy 40;
+// nfreqz 20;
+
+// -- Maximum length as a multiple of Lcorr  (not used for periodic)
+maxLength (10 10 10);
+
+// -- Print basic output stats
+printStats true;
+printLogStats true;
+
+
+// -- For truncated fields
+values (1e-9 1e-11);
+thresholds (0);
+
+// -- For bitruncated fields
+thresholds2 (0);

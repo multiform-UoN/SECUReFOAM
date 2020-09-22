@@ -1,0 +1,59 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | foam-extend: Open Source CFD                    |
+|  \\    /   O peration     | Version:     4.0                                |
+|   \\  /    A nd           | Web:         http://www.foam-extend.org         |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    object      p_fr;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [1 -1 -2 0 0 0 0];
+
+internalField   uniform 0;
+
+boundaryField
+{
+    inlet
+    {
+        type            zeroGradient;//darcyGradPressureAniso;
+        Mf   "Mf_fr";
+        phi "phi_fr";
+        value           $internalField;
+    }
+
+    outlet
+    {
+        type            zeroGradient;//darcyGradPressureAniso;
+        value           $internalField;
+        Mf   "Mf_fr";
+        phi "phi_fr";
+        value           $internalField;
+    }
+
+    upperWall
+    {
+        type            fixedValue;
+        value           $internalField;
+    }
+
+    lowerWall
+    {
+        type            zeroGradient;
+        value           $internalField;
+    }
+
+    frontAndBack
+    {
+        type            empty;
+    }
+}
+
+
+// ************************************************************************* //

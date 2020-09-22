@@ -1,0 +1,73 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | foam-extend: Open Source CFD                    |
+|  \\    /   O peration     | Version:     4.0                                |
+|   \\  /    A nd           | Web:         http://www.foam-extend.org         |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+application simpleFoam;
+
+startFrom       startTime;
+
+startTime       0;
+
+stopAt          endTime;
+
+endTime         1000;
+
+deltaT          1;
+
+writeControl    runTime;
+
+writeInterval   10;
+
+purgeWrite      0;
+
+writeFormat     binary;
+
+writePrecision  6;
+
+writeCompression uncompressed;
+
+timeFormat      general;
+
+timePrecision   6;
+
+runTimeModifiable yes;
+
+/*
+functions
+{
+    Keff
+    {
+        // Load the library containing the 'coded' functionObject
+        libs            ("libutilityFunctionObjects.so");
+
+        type coded;
+
+        // Name of on-the-fly generated functionObject
+        name Keff;
+
+        codeWrite
+        #{
+	        const volVectorField& U = mesh().lookupObject<volVectorField>("U");
+
+	        dimensionedVector meanVel( (fvc::domainIntegrate(U))/gSum(mesh().V()) );
+
+            Info   << "MeanVel =  " << meanVel <<"\n";
+        #};
+    }
+*/
+}
+
+
+// ************************************************************************* //

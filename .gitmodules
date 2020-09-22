@@ -1,0 +1,6 @@
+[submodule "mrmtFOAM"]
+	path = mrmtFOAM
+	url = https://github.com/multiform-UoN/mrmtFOAM
+[submodule "porousTransportUpscalingFoam"]
+	path = porousTransportUpscalingFoam
+	url = https://github.com/multiform-UoN/porousTransportUpscalingFoam

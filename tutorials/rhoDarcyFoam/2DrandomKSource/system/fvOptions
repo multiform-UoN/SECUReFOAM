@@ -1,0 +1,45 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  7
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      fvOptions;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+fixedInjectionRate
+{
+    type            scalarSemiImplicitSource;
+    active          yes;
+    selectionMode   cellZone;
+    cellZone        well;
+
+    volumeMode      absolute;
+
+    //- Rate of injection [m^3/s]
+    injRate 0.0001;
+    // - Concentration of injection [valume fraction]
+    injConc 1;
+
+    cImpInjRate 0; //#calc "-$injRate*$injConc";
+
+    cExpInjRate #calc "$injRate*$injConc";
+
+    injectionRateSuSp
+    {
+        //- Syntax
+        //  fieldName   (Su Sp)
+        
+        c           ($cExpInjRate $cImpInjRate);
+        p_rgh       ($injRate 0);
+    }
+}
+// ************************************************************************* //
