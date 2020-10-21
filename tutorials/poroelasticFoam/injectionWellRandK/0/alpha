@@ -9,25 +9,27 @@ FoamFile
 {
     version     2.0;
     format      ascii;
-    class       volTensorField;
-    location    "0";
-    object      K;
+    class       volScalarField;
+    object      alpha;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-dimensions      [0 2 0 0 0 0 0];
+dimensions      [0 0 0 0 0 0 0];
 
-internalField   uniform (1e-6 0  0  0 1e-6  0 0 0 1e-6);
+internalField   uniform 0;
 
 boundaryField
 {
     inlet
     {
-        type            zeroGradient;
+        type            calculated;
+        value           $internalField;
     }
+
     outlet
     {
-        type            zeroGradient;
+        type            calculated;
+        value           $internalField;
     }
 
     frontAndBack

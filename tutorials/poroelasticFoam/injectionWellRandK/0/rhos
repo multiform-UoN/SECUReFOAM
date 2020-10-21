@@ -1,0 +1,89 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | foam-extend: Open Source CFD                    |
+|  \\    /   O peration     | Version:     4.0                                |
+|   \\  /    A nd           | Web:         http://www.foam-extend.org         |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    object      rhos;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [1 -3 0 0 0 0 0];
+
+internalField  #codeStream
+{
+        code
+        #{
+            const IOdictionary& d = static_cast<const IOdictionary&>(dict);
+            const fvMesh& mesh = refCast<const fvMesh>(d.db());
+            const volScalarField magK
+            (
+                mag(mesh.lookupObject<volTensorField>("K"))
+            );
+
+            scalarField fld(magK.internalField());
+            scalar maxK = max(magK).value();
+
+            scalar minFld = 7854;
+            scalar maxFld = 8854;
+
+            forAll(fld,cellI)
+            {
+                if(fld[cellI] < maxK - small)
+                {
+                    fld[cellI] = minFld;
+                }
+                else
+                {
+                    fld[cellI] = maxFld;
+                }
+            }
+
+            writeEntry(os,"",fld);
+        #};
+
+        //- Optional:
+        codeInclude
+        #{
+            #include "fvCFD.H"
+        #};
+
+        //- Optional:
+        codeOptions
+        #{
+            -I$(LIB_SRC)/finiteVolume/lnInclude \
+            -I$(LIB_SRC)/meshTools/lnInclude
+        #};
+
+        #inputMode merge
+};
+
+
+boundaryField
+{
+    inlet
+    {
+        type            calculated;
+        value           $internalField;
+    }
+
+    outlet
+    {
+        type            calculated;
+        value           $internalField;
+    }
+
+    frontAndBack
+    {
+        type            empty;
+    }
+}
+
+
+// ************************************************************************* //

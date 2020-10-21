@@ -69,7 +69,8 @@ int main(int argc, char *argv[])
                 #include "solveElasticity.H"
             }
 
-            Sigma = mu*dev(twoSymm(gradD + T(gradD))) + lambda*tr(gradD)*I;
+            #include "updateStress.H"
+
         }
 
 

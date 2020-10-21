@@ -9,32 +9,42 @@ FoamFile
 {
     version     2.0;
     format      ascii;
-    class       volTensorField;
-    location    "0";
-    object      K;
+    class       dictionary;
+    location    "system";
+    object      decomposeParDict;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-dimensions      [0 2 0 0 0 0 0];
+numberOfSubdomains 4;
 
-internalField   uniform (1e-6 0  0  0 1e-6  0 0 0 1e-6);
+method          simple;
 
-boundaryField
+simpleCoeffs
 {
-    inlet
-    {
-        type            zeroGradient;
-    }
-    outlet
-    {
-        type            zeroGradient;
-    }
-
-    frontAndBack
-    {
-        type            empty;
-    }
+    n               ( 2 2 1 );
+    delta           0.001;
 }
+
+hierarchicalCoeffs
+{
+    n               ( 1 1 1 );
+    delta           0.001;
+    order           xyz;
+}
+
+metisCoeffs
+{
+    processorWeights ( 1 1 1 1 );
+}
+
+manualCoeffs
+{
+    dataFile        "";
+}
+
+distributed     no;
+
+roots           ( );
 
 
 // ************************************************************************* //

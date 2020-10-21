@@ -9,31 +9,56 @@ FoamFile
 {
     version     2.0;
     format      ascii;
-    class       volTensorField;
-    location    "0";
-    object      K;
+    class       dictionary;
+    object      fvSchemes;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-dimensions      [0 2 0 0 0 0 0];
-
-internalField   uniform (1e-6 0  0  0 1e-6  0 0 0 1e-6);
-
-boundaryField
+ddtSchemes
 {
-    inlet
-    {
-        type            zeroGradient;
-    }
-    outlet
-    {
-        type            zeroGradient;
-    }
+    default steadyState;
 
-    frontAndBack
-    {
-        type            empty;
-    }
+}
+
+d2dt2Schemes
+{
+	default steadyState;
+}
+
+gradSchemes
+{
+    default         leastSquares;
+	grad(D)         pointCellsLeastSquares;
+
+}
+
+divSchemes
+{
+    default         Gauss linear;
+}
+
+laplacianSchemes
+{
+    default            		none;
+	laplacian(mu,D) 		Gauss linear corrected;
+	laplacian(Mf,p)			Gauss linear corrected;
+}
+
+interpolationSchemes
+{
+    default         linear;
+    interpolate(U)  linear;
+}
+
+snGradSchemes
+{
+    default         orthogonal;
+}
+
+fluxRequired
+{
+    default none;
+    p yes;
 }
 
 

@@ -41,7 +41,7 @@ volVectorField D
 );
 
 Info<< "Reading permeability field K\n" << endl;
-volSymmTensorField K
+volTensorField K
 (
     IOobject
     (
@@ -75,7 +75,7 @@ volSymmTensorField Sigma
 );
 
 //- Create mobility surface tensor field
-surfaceSymmTensorField Mf("Mf",fvc::interpolate(K,"K")/(nu*rhof));
+surfaceTensorField Mf("Mf",fvc::interpolate(K,"K")/(nu*rhof));
 
 //- Create gravitational flux
 surfaceScalarField phiG("phiG",(rhof * (Mf & g)) & mesh.Sf());

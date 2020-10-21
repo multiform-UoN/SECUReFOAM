@@ -9,32 +9,79 @@ FoamFile
 {
     version     2.0;
     format      ascii;
-    class       volTensorField;
-    location    "0";
-    object      K;
+    class       dictionary;
+    object      blockMeshDict;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-dimensions      [0 2 0 0 0 0 0];
+convertToMeters 1;
 
-internalField   uniform (1e-6 0  0  0 1e-6  0 0 0 1e-6);
+rOut 40;
+rIn  2;
 
-boundaryField
-{
+diagOut #calc "$rOut*sqrt(2.)/2.";
+diagIn #calc "$rIn*sqrt(2.)/2.";
+
+vertices
+(
+    ($rIn 0 0)
+    ($rOut 0 0)
+    (0 $rOut 0)
+    (0 $rIn 0)
+    ($rIn 0 1)
+    ($rOut 0 1)
+    (0 $rOut 1)
+    (0 $rIn 1)
+
+);
+
+blocks
+(
+    hex (0 1 2 3 4 5 6 7 ) (40 40 1) simpleGrading (1 1 1)
+);
+
+edges
+(
+    arc 1 2 ($diagOut $diagOut 0)
+    arc 3 0 ($diagIn $diagIn 0)
+    arc 5 6 ($diagOut $diagOut 1)
+    arc 7 4 ($diagIn $diagIn 1)
+
+);
+
+boundary
+(
     inlet
     {
-        type            zeroGradient;
+        type patch;
+        faces
+        (
+            (0 3 7 4)
+        );
     }
     outlet
     {
-        type            zeroGradient;
+        type patch;
+        faces
+        (
+            (1 5 6 2)
+        );
     }
 
     frontAndBack
     {
-        type            empty;
+        type empty;
+        faces
+        (
+            (0 1 2 3)
+            (4 5 6 7)
+        );
     }
-}
+);
+
+mergePatchPairs
+(
+);
 
 
 // ************************************************************************* //

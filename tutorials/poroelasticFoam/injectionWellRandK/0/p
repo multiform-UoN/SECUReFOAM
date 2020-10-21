@@ -9,25 +9,47 @@ FoamFile
 {
     version     2.0;
     format      ascii;
-    class       volTensorField;
-    location    "0";
-    object      K;
+    class       volScalarField;
+    object      p;
 }
 // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
 
-dimensions      [0 2 0 0 0 0 0];
+dimensions      [1 -1 -2 0 0 0 0];
 
-internalField   uniform (1e-6 0  0  0 1e-6  0 0 0 1e-6);
+internalField   uniform 1e5;
 
 boundaryField
 {
     inlet
     {
-        type            zeroGradient;
+        type            fixedValue;
+        value           uniform 1.1e5;
+        name    rampedFixedValue;   // name of generated BC
+
+        code
+        #{
+            scalar A(1e+4);
+            scalar omega(60);
+            scalar t(db().time().value());
+            operator==(1e+5 + A*sin(6.28*omega*t));
+        #};
+
+        // codeInclude
+        //#{
+        //    #include "fvCFD.H"
+        //#};
+
+        // codeOptions
+        //#{
+        //    -I$(LIB_SRC)/finiteVolume/lnInclude
+        //#};
     }
+
+
     outlet
     {
-        type            zeroGradient;
+        type            fixedValue;
+        value           uniform 1e5;
     }
 
     frontAndBack

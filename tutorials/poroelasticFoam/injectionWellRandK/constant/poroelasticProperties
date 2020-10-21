@@ -1,0 +1,67 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  7
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "constant";
+    object      poroelasticProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+
+//- Biot (coupling) coefficient
+alpha   0.9;
+
+
+solidProperties
+{
+    //- Assuming granite
+    //  properties:
+    //      E = 6.5e+10    nu = 0.3
+
+    //- Second Lame' coefficient (shear modulus)
+    //  This can be computed from the Young and Poisson moduli (E and nu)
+    //
+    //  mu = E / 2*(1 + nu)
+
+    mu   2.5e+6;
+
+    //- First Lame' coefficient (Bulk)
+    //  This can be computed from the Young and Poisson moduli (E and nu)
+    //
+    //  mu = (E * nu) / ((1 + nu) * (1 - 2*nu))
+
+    lambda 1.147e+6;
+
+    //- Density
+    rho 7854;
+
+    fractureModel
+    {
+        ultimateTensileStrength 7.3e+5;
+        fracturePermeability  1e-6;
+    }
+
+
+}
+
+fluidProperties
+{
+    //- Kinematic viscosity
+    nu      8.9e-07;
+
+    //- Density
+    rho   1000;
+
+    //- Storativity
+    storativity 1;
+}
+
+// ************************************************************************* //

@@ -1,0 +1,99 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | foam-extend: Open Source CFD                    |
+|  \\    /   O peration     | Version:     4.0                                |
+|   \\  /    A nd           | Web:         http://www.foam-extend.org         |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      fvSolution;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+solvers
+{
+    p
+    {
+        solver          PCG;
+        preconditioner  DIC;
+        tolerance       1e-06;
+        relTol          0;
+    }
+
+	pFinal
+	{
+		$p
+		relTol 0;
+	}
+
+	D
+    {
+		solver          PBiCGStab;
+        tolerance       1e-06;
+        relTol          1e-4;
+        preconditioner  diagonal;
+
+    }
+
+    DFinal
+	{
+		$D
+		relTol 0;
+	}
+
+}
+
+PIMPLE
+{
+    nNonOrthogonalCorrectors 1;
+	nOuterCorrectors  1;
+
+    outerCorrectorsResidualControl
+    {
+        p
+        {
+            tolerance 1e-5;
+            relTol    0;
+        }
+
+    }
+
+    residualControl
+    {
+        p 1e-6;
+    }
+}
+
+stressAnalysis
+{
+    nCorrectors 1000;
+    tolerance 1e-5;
+}
+
+
+relaxationFactors
+{
+    fields
+    {
+        p               1;
+        D               0.3;
+    }
+
+    equations
+    {
+         D  0.5;
+    }
+}
+
+cache
+{
+//    grad(p);
+	grad(D);
+}
+
+
+// ************************************************************************* //

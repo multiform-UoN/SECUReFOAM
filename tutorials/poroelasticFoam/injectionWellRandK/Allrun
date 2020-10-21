@@ -1,0 +1,17 @@
+#!/bin/bash
+
+
+
+. $WM_PROJECT_DIR/bin/tools/RunFunctions
+. $WM_PROJECT_DIR/bin/tools/CleanFunctions
+
+cleanCase
+
+runApplication blockMesh
+#runApplication extrudeMesh
+runApplication mirrorMesh -dict mirrorMeshDict.x -overwrite
+mv log.mirrorMesh log.mirrorMesh.x
+runApplication mirrorMesh -dict mirrorMeshDict.y -overwrite
+mv log.mirrorMesh log.mirrorMesh.y
+runApplication setRandomField
+runApplication poroelasticFoam
