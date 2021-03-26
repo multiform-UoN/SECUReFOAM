@@ -1,7 +1,11 @@
 // Set random seed
 clock_t time_= std::clock();
 srand (time_);
-Random rng(rand()+Pstream::myProcNo());
+
+label rndSeed(rand());
+Info << "Seed is : " << rndSeed << endl;
+
+Random rng(rndSeed+Pstream::myProcNo());
 
 IOdictionary setRandomFieldDict
 (
