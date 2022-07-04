@@ -1,0 +1,42 @@
+functions
+{
+    breakthrough
+    {
+        // Load the library containing the 'coded' functionObject
+        libs            ("libutilityFunctionObjects.so");
+
+        type coded;
+
+        // Name of on-the-fly generated functionObject
+        name breakthrough;
+
+        codeWrite
+        #{
+            // Lookup c
+            //Info<< "Looking up field c\n" << endl;
+            const volScalarField& c = mesh().lookupObject<volScalarField>("T");
+            const volVectorField& U = mesh().lookupObject<volVectorField>("U");
+
+            //Get outlet patch
+            label patchId = mesh().boundaryMesh().findPatchID("outlet");
+            const scalarField& cOut(c.boundaryField()[patchId]);
+            const vectorField& Sf( mesh().Sf().boundaryField()[patchId]);
+            const vectorField& Uout(U.boundaryField()[patchId]);
+
+            scalarField fluxOut((Uout&Sf));
+
+            scalar totalMass( (fvc::domainIntegrate(c)).value() );
+            vector meanVel( (fvc::domainIntegrate(U)).value() / gSum(mesh().V()) );
+            scalar cFluxOut(gSum(cOut*(Sf&Uout))/gSum(fluxOut) );
+
+
+
+            //std::ofstream file;
+            //file.open("breakthrough.dat", std::ios::out | std::ios::app);
+            //file << mesh().time().timeName()
+            Info   << "Total mass =  " << totalMass << endl;
+            Info   << "Mean vel = " << meanVel << endl;
+            Info   << "Flux out = " << cFluxOut << endl;
+        #};
+    }
+}

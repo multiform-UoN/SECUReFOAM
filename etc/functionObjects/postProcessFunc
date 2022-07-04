@@ -1,0 +1,57 @@
+
+functions
+{
+    shear
+    {
+    functionObjectLibs ("libutilityFunctionObjects.so");
+    type              coded;
+    redirectType       shear;
+    codeExecute
+    #{
+        //- Get velocity field
+        const volVectorField& U = mesh().lookupObject<volVectorField>("U");
+
+        volTensorField D(fvc::grad(U));
+        volSymmTensorField S(dev(symm(D)));
+        S.write();
+        D.write();
+
+        volScalarField S1
+        (
+          "S1", 0.5*( sqr(tr(D)) - tr(D&D) )
+        );
+        S1.write();
+        volScalarField S2
+        (
+          "S2", 0.5*tr( D&(D.T()) )
+        );
+        S2.write();
+        volScalarField S3
+        (
+          "S3", 0.5*( sqr(tr(S)) - tr(S&S) )
+        );
+        S3.write();
+        volScalarField S4
+        (
+          "S4", sqrt(tr(S&(S.T())))
+        );
+        S4.write();
+        volScalarField S5
+        (
+          "S5", (mag(symm(fvc::grad(U))))
+        );
+        S5.write();
+
+
+
+        scalar vol(gSum(mesh().V()));
+
+        Info << "S1 " << gSum(S1.primitiveField()*mesh().V())/vol << endl;
+        Info << "S2 " << gSum(S2.primitiveField()*mesh().V())/vol << endl;
+        Info << "S3 " << gSum(S3.primitiveField()*mesh().V())/vol << endl;
+        Info << "S4 " << gSum(S4.primitiveField()*mesh().V())/vol << endl;
+        Info << "S5 " << gSum(S5.primitiveField()*mesh().V())/vol << endl;
+    #};
+
+    }
+}

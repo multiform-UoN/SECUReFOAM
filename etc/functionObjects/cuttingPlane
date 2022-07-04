@@ -1,0 +1,31 @@
+
+functions
+{
+    surfaceFieldValue1
+    {
+        type            surfaceFieldValue;
+        libs            ("libfieldFunctionObjects.so");
+        writeControl    writeTime;
+        log             yes;
+        writeFields     no;
+        regionType      sampledSurface;
+        name            outlet;
+        operation       areaAverage;//weightedAverage;
+        //weightField     T;
+        fields
+        (
+            T
+        );
+        sampledSurfaceDict
+        {
+            type         cuttingPlane;
+            planeType    pointAndNormal;
+            pointAndNormalDict
+            {
+                    basePoint    (0.5 0.5 0.5);
+                    normalVector (0 0 -1);
+            }
+            interpolate  true;
+        }
+    }
+}

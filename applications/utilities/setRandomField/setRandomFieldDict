@@ -1,0 +1,95 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     | Website:  https://openfoam.org
+    \\  /    A nd           | Version:  7
+     \\/     M anipulation  |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      setRandomFieldDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// -- Random seed (to reproduce the same field)
+// seed 100;
+
+// -- Name of the field
+// -- this is always read and is used as a (multiplicative or additive) basis when reset=false
+field K;
+
+// -- Type of random field
+type gaussian;
+// type logNormal;
+// type truncated;
+// type bitruncated;
+// type uniform;
+
+// -- Correlation function
+correlation exponential;
+// correlation gaussian;
+// correlation matern;
+
+// -- Correlation lengths
+Lcorr           (0.2 0.2 1);
+
+// -- Correlation tolerance (skip high frequencies)
+corrTol         1e-8;
+
+// -- Matern coefficient
+nu              1;
+
+// -- Disable dimensions
+disableY false;
+disableZ false;
+
+// -- Periodic field
+periodic true;
+facePeriodicity false; // face-based periodicity
+fullPeriodicity true; // force period equal to domain size
+
+// -- Initialisation
+reset true; // discard current value
+additive false; // sum (or multiply) existing value
+
+// -- Performs a final rescaling to match mu and sigma
+setFinalStats  false;
+
+// -- Mean and variance (of the underlying Gaussian)
+mu             0;
+sigma          1;
+
+// -- Number of frequencies in the expansion
+nfreq 20;
+// nfreqy 20;
+// nfreqz 20;
+skipfreq 0;
+// skipfreqy 0;
+// skipfreqz 0;
+
+// -- Maximum wave lengths (overwrites the maxLengthByL if found)
+// maxLength (10 10 10);
+
+// -- Maximum wave lengths divided per correlation length
+maxLengthByL 4;
+
+// -- Minimum wave lengths divided  (overwrites nfreq if not enough to sample this length)
+minLengthByL 0.25; // per correlation length
+minLengthByCellSize 4;    // per mesh size
+// --  if both are set, the maximum between the two is choosen
+
+// -- Print basic output stats
+printStats true;
+printLogStats true;
+
+// -- For truncated fields
+// values (0 1 2 3); // default are 0,1,2,...
+percentiles (0.5);
+// thresholds (0); // overwrites the percentiles
+
+// -- For bitruncated fields
+percentiles2 (0.5);
+// thresholds2 (0); // overwrites the percentiles
