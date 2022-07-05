@@ -1,0 +1,6 @@
+krModel/krModel.C
+krModel/krModelNew.C
+constantkr/constantkr.C
+powerlawkr/powerlawkr.C
+
+LIB = $(FOAM_USER_LIBBIN)/libkrModels

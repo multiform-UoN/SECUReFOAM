@@ -1,0 +1,6 @@
+densityModel/densityModel.C
+densityModel/densityModelNew.C
+linearDensity/linearDensity.C
+constantDensity/constantDensity.C
+
+LIB = $(FOAM_USER_LIBBIN)/libdensityModels

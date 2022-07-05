@@ -1,0 +1,3 @@
+fixedInfiltrationRate//fixedInfiltrationRate.C
+
+LIB = $(FOAM_USER_LIBBIN)/librichardsBoundaryConditions

@@ -1,0 +1,8 @@
+viscosityModel/viscosityModel.C
+viscosityModel/viscosityModelNew.C
+exponentialViscosity/exponentialViscosity.C
+constantViscosity/constantViscosity.C
+cubicViscosity/cubicViscosity.C
+tabulatedViscosity/tabulatedViscosity.C
+
+LIB = $(FOAM_USER_LIBBIN)/libviscosityModels

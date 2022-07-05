@@ -1,0 +1,5 @@
+darcyGradPressureAniso/darcyGradPressureAniso.C
+darcyFixedVelocity/darcyFixedVelocity.C
+hydrostaticPressure/hydrostaticPressure.C
+
+LIB = $(FOAM_USER_LIBBIN)/libdarcyBoundaryConditions

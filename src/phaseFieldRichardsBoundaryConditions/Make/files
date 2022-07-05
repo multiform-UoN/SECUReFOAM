@@ -1,0 +1,4 @@
+fixedInfiltrationRate/fixedInfiltrationRate.C
+fixedInfiltrationRateTheta/fixedInfiltrationRateTheta.C
+
+LIB = $(FOAM_USER_LIBBIN)/libphaseFieldRichardsBoundaryConditions

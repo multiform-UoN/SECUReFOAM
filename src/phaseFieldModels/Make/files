@@ -1,0 +1,5 @@
+phaseFieldModel/phaseFieldModel.C
+phaseFieldModel/phaseFieldModelNew.C
+doubleWell/doubleWell.C
+
+LIB = $(FOAM_USER_LIBBIN)/libphaseFieldModels

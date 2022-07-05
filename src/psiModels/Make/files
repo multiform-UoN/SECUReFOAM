@@ -1,0 +1,6 @@
+psiModel/psiModel.C
+psiModel/psiModelNew.C
+leverettPsi/leverettPsi.C
+testPsi/testPsi.C
+
+LIB = $(FOAM_USER_LIBBIN)/libpsiModels
