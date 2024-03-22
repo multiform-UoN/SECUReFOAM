@@ -1,0 +1,97 @@
+/*---------------------------------------------------------------------------*\
+  =========                 |
+  \\      /  F ield         | 
+   \\    /   O peration     | 
+    \\  /    A nd           | 
+     \\/     M anipulation  | 
+-------------------------------------------------------------------------------
+Application
+ reactrhoDarcy based on rhoDarcyFoam
+
+Description
+    Solves the Darcy equation with variable density/viscosity
+    and a A+B=C reaction. Density depends on A, B and C. Viscosity only on A.
+
+Developers
+    Federico Municchi
+    Matteo Icardi
+    Juan J. Hidalgo
+\*---------------------------------------------------------------------------*/
+
+#include "fvCFD.H"
+#include "fvOptions.H"
+#include "pimpleControl.H"
+#include "reactdensityModel.H"
+#include "viscosityModel.H"
+#include "reverseLinear.H"
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+int main(int argc, char *argv[])
+{
+
+  #include "setRootCase.H"
+  #include "createTime.H"
+  #include "createTimeControls.H"
+  #include "createMesh.H"
+
+  pimpleControl pimple(mesh);
+
+  #include "readGravitationalAcceleration.H"
+  #include "createFields.H"
+  #include "initContinuityErrs.H"
+
+  // * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+  #include "CourantNo.H"
+  #include "setInitialDeltaT.H"
+
+  while(runTime.loop())
+  {
+    #include "readTimeControls.H"
+
+    Info << "\nTime = " << runTime.timeName() << nl << endl;
+
+    while (pimple.loop())
+    {
+      //- Transport equation
+      {
+        #include "transport.H"
+      }
+
+      //- Update density/viscosity and, if needed, PhiG and Mf
+      #include "updatePhiG.H"
+      #include "updateMf.H"
+
+      //- Pressure equation
+      #include "pEqn.H"
+
+    
+      // - Reconstruct velocity fields and recompute dispersion
+      U = fvc::reconstruct(phi);
+      //#include "updateD.H"
+    }
+   
+    #include "postProcessing.H"
+    #include "continuityErrs.H"
+    #include "CourantNo.H"
+    #include "setDeltaT.H"
+
+    Info << "Mean velocity  = "
+        << gSum(U.primitiveField()*mesh.V())/gSum(mesh.V())
+        << nl << endl;
+
+    runTime.write();
+
+    Info << "ExecutionTime = " << runTime.elapsedCpuTime() << " s"
+    << "  ClockTime = " << runTime.elapsedClockTime() << " s"
+    << nl << endl;
+
+  }
+
+  Info<< "End\n" << endl;
+
+  return 0;
+}
+
+// ************************************************************************* //

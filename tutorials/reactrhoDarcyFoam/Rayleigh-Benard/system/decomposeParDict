@@ -1,0 +1,53 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  2.2.2                                 |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    note        "mesh decomposition control dictionary";
+    object      decomposeParDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+numberOfSubdomains  4;
+
+method simple;
+//method          scotch;
+//method          hierarchical;
+// method          simple;
+// method          metis;
+// method          manual;
+// method          multiLevel;
+// method          structured;  // does 2D decomposition of structured mesh
+
+
+
+
+simpleCoeffs
+{
+    n           (2 1 2);
+    delta       0.001;
+}
+
+hierarchicalCoeffs
+{
+    n           (1 1 1);
+    delta       0.001;
+    order       xyz;
+}
+
+
+manualCoeffs
+{
+    dataFile    "";
+}
+
+distributed     no;
+
+// ************************************************************************* //

@@ -1,0 +1,106 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  5.0                                   |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    object      cA;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [1 -3 0 0 0 0 0];
+
+internalField  #codeStream
+{
+  codeInclude
+  #{
+     #include "fvCFD.H"
+     #include "Random.H"
+     #include "Time.H"
+  #};
+
+  codeOptions
+  #{
+     -I$(LIB_SRC)/finiteVolume/lnInclude \
+     -I$(LIB_SRC)/meshTools/lnInclude
+  #};
+
+  codeLibs
+  #{
+     -lmeshTools \
+     -lfiniteVolume
+  #};
+
+  code
+  #{
+     const IOdictionary& d = static_cast<const IOdictionary&>(dict);
+     const fvMesh& mesh = refCast<const fvMesh>(d.db());
+
+     scalarField c(mesh.nCells(), 0.);
+     Random randObj(time(NULL));      
+
+     
+     forAll(c, i)
+     {
+       const scalar x = mesh.C()[i][0];
+       const scalar z = mesh.C()[i][2];
+       const scalar noise = randObj.scalar01();
+       //scalar val;
+
+       c[i] = 0.;
+       
+       if (z > 3068){
+         c[i] = 1. + 0.001*noise;
+       }
+       //val = z/10. + 0.1*noise;
+       //if(val>1){val = 1;}
+       //if(val<0){val = 0;}
+       //c[i] = val;
+     }
+
+     writeEntry(os, "", c);
+
+  #};
+};
+
+
+boundaryField
+{
+    left
+    {
+        type            zeroGradient;
+    }
+    
+    right
+    {
+        type            zeroGradient;
+    }
+    
+    bottom
+    {
+        type             zeroGradient;
+    }
+    top
+    {
+        type             fixedValue;
+	value            1.0;
+
+    }
+    front
+    {
+        type            empty;
+    }
+    back
+    {
+        type            empty;
+    }
+}
+
+
+// ************************************************************************* //

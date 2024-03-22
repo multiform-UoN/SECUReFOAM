@@ -1,0 +1,39 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  5.0                                  |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+  version     2.0;
+  format      ascii;
+  class       dictionary;
+  location    "constant";
+  object      transportProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+transportModel  Newtonian;
+
+Da         Da   [0 2 -1 0 0 0 0]   1.;
+Db         Db   [0 2 -1 0 0 0 0]   3.;
+Dc         Dc   [0 2 -1 0 0 0 0]   1.;
+Dam        Dam  [-1 3 -1 0 0 0 0]  1.;
+
+reactdensityModel
+{
+  type      reactlinearDensity;
+  rho0  0.;
+  Ra    -1.;
+  Rb    0.;
+  Rc    0.5;
+}
+
+viscosityModel
+{
+  type constantViscosity;
+  mu0  1.;
+}
+// ************************************************************************* //

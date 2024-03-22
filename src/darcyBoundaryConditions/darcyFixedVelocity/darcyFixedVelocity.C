@@ -160,17 +160,13 @@ void Foam::darcyFixedVelocity::updateCoeffs()
             db().lookupObject<IOobject>("g")
         );
 
-        dimensionedScalar rho
-        (
-            db().lookupObject<IOdictionary>
-            (
-                "transportProperties"
-            ).lookup("rho")
-        );
+	const fvPatchField<scalar>& rho =
+            patch().lookupPatchField<volScalarField, scalar>("rho");
 
         gradient() =
             - ( (inv(Mf) & (-velocity_ * patch().nf())) & patch().nf() )
-            + ( rho.value() * g.value() & patch().nf() );
+            + ( rho * g.value() & patch().nf() );
+
     }
     else
     {

@@ -1,0 +1,112 @@
+/*---------------------------------------------------------------------------*\
+  =========                 |
+  \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox
+   \\    /   O peration     |
+    \\  /    A nd           | Copyright (C) 2011-2016 OpenFOAM Foundation
+     \\/     M anipulation  |
+-------------------------------------------------------------------------------
+License
+    This file is part of OpenFOAM.
+
+    OpenFOAM is free software: you can redistribute it and/or modify it
+    under the terms of the GNU General Public License as published by
+    the Free Software Foundation, either version 3 of the License, or
+    (at your option) any later version.
+
+    OpenFOAM is distributed in the hope that it will be useful, but WITHOUT
+    ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or
+    FITNESS FOR A PARTICULAR PURPOSE.  See the GNU General Public License
+    for more details.
+
+    You should have received a copy of the GNU General Public License
+    along with OpenFOAM.  If not, see <http://www.gnu.org/licenses/>.
+
+Class
+    Foam::reactdensityModels::reactlinearDensity
+
+Description
+    Reactlinear density model based on rho0 and beta coefficients
+
+        rho =rho0 + Ra*cA + Rb*cB + Rc*cC
+
+SourceFiles
+    reactlinearDensity.C
+
+Developer
+    Juan J. Hidalgo, Matteo Icardi
+
+\*---------------------------------------------------------------------------*/
+
+#ifndef reactlinearDensity_H
+#define reactlinearDensity_H
+
+#include "reactdensityModel.H"
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+namespace Foam
+{
+namespace reactdensityModels
+{
+
+/*---------------------------------------------------------------------------*\
+                  Class reactlinearDensity Declaration
+\*---------------------------------------------------------------------------*/
+
+class reactlinearDensity
+:
+    public reactdensityModel
+{
+private:
+
+    //- model coefficients
+  scalar rho0_, Ra_, Rb_, Rc_;
+
+
+
+public:
+
+    //- Runtime type information
+    TypeName("reactlinearDensity");
+
+    // Constructors
+
+    //- Construct from components
+    reactlinearDensity
+    (
+        const dictionary& dict,
+        const volScalarField& cA,
+	const volScalarField& cB,
+        const volScalarField& cC,
+        volScalarField& rho,
+        volScalarField& drhodC
+    );
+
+    //- Destructor
+    ~reactlinearDensity()
+        {}
+
+    //- Member Functions
+
+        //- Return density
+        virtual tmp<scalarField> rho(const scalarField& cA, const scalarField& cB, const scalarField& cC);
+
+        //- Return density derivative
+        virtual tmp<scalarField> drhodC(const scalarField& cA);
+
+        //- Write
+        virtual void write(Ostream& o) const;
+
+};
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+} // End namespace densityModels
+
+} // End namespace Foam
+
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#endif
+
+// ************************************************************************* //

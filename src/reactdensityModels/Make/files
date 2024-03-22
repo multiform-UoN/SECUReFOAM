@@ -1,0 +1,5 @@
+reactdensityModel/reactdensityModel.C
+reactdensityModel/reactdensityModelNew.C
+reactlinearDensity/reactlinearDensity.C
+
+LIB = $(FOAM_USER_LIBBIN)/libreactdensityModels
