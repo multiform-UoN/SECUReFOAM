@@ -4,8 +4,8 @@ while(pimple.correctNonOrthogonal())
   (
     -  fvm::laplacian(Mf,pp)
     -  fvc::div(phiG)
-    ==
-    (dims/rho)*fvOptions(pp)
+    //==
+    //(dims/rho)*fvOptions(pp)
   );
 
   if (!incompressible)

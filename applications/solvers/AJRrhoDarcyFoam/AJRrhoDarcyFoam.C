@@ -57,34 +57,47 @@ int main(int argc, char *argv[])
       {
         #include "cEqn.H"
       }
+      Info<< "A0\n" << endl;
 
       //- Update density/viscosity and, if needed, PhiG and Mf
       #include "updatePhiG.H"
+      Info<< "A1\n" << endl;
       #include "updateMf.H"
+      Info<< "A2\n" << endl;
 
       //- Pressure equation
       if (hydrostaticPressure)
       {
         volScalarField&  pp(p_rgh);
         #include "pEqn.H"
+        Info<< "A33\n" << endl;
         p = p_rgh + rho*gh;
       }
       else
       {
         volScalarField&   pp(p);
         #include "pEqn.H"
+        Info<< "A3\n" << endl;
         p_rgh = p - rho*gh;
       }
     
       // - Reconstruct velocity fields and recompute dispersion
       U = fvc::reconstruct(phi);
+      Info<< "A4\n" << endl;
       #include "updateD.H"
+      Info<< "A5\n" << endl;
     }
+
+    Info<< "A\n" << endl;
     
     #include "postProcessing.H"
+    Info<< "B\n" << endl;
     #include "continuityErrs.H"
+    Info<< "C\n" << endl;
     #include "CourantNo.H"
+    Info<< "D\n" << endl;
     #include "setDeltaT.H"
+    Info<< "E\n" << endl;
 
     Info << "Mean velocity  = "
         << gSum(U.primitiveField()*mesh.V())/gSum(mesh.V())

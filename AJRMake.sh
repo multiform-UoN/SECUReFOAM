@@ -6,7 +6,7 @@ cd ../densityModels
 wmake
 cd ../viscosityModels
 wmake
-cd ../../applications/solvers/rhoDarcyFoam/
+cd ../../applications/solvers/AJRrhoDarcyFoam/
 wmake
 #cd ../AMRrhoDarcyFoam/
 #wmake
