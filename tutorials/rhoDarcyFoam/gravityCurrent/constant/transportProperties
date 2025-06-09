@@ -1,0 +1,44 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  5.0                                  |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+  version     2.0;
+  format      ascii;
+  class       dictionary;
+  location    "constant";
+  object      transportProperties;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+#include "../AJRParameters"
+
+transportModel  Newtonian;
+
+mu             mu   [1 -1 -1 0 0 0 0]  1.0;
+// rho            rho1 [1 -3 0 0 0 0 0]   1.;
+// rhoc	       rho2 [1 -3 0 0 0 0 0]   1200.;
+Dm             DT   [0 2 -1 0 0 0 0]   #calc "1.0/$Ra"; // 3.565e-6 multiplied by porosity.
+beta           beta [0 0 0 0 0 0 0]    1.0; // Porosity
+hydrostaticPressure off;
+concentrationBased off;
+dispersionModel off;
+incompressible on;
+
+densityModel
+{
+  type      linearDensity;
+  rho0  1.0;
+  beta  -1.;
+}
+
+viscosityModel
+{
+  type constantViscosity;
+  mu0  1.0;
+}
+// ************************************************************************* //

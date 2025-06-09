@@ -1,0 +1,102 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  5.0                                   |
+|   \\  /    A nd           | Web:      www.OpenFOAM.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// libs ("libdynamicRefine2D.so");
+
+application     rhoDarcyFoam;
+
+startFrom       startTime; //firstTime, startTime, latestTime
+
+startTime       0.0;
+
+stopAt          writeNow;//endTime;
+
+endTime         20.0;//10.0;//622080000; //3110400000;//622080000; //20 years 1 yr. = 31104000
+
+deltaT          1e-4;//876600; // 10.15 days
+
+// writeControl    adjustableRunTime;
+// writeInterval   31104e3; //1 year = 31104e3;
+writeControl    adjustableRunTime; //adjustableRunTime timeStep
+writeInterval   0.1;
+
+purgeWrite      0;
+
+writeFormat     ascii;
+
+writePrecision  6;
+
+writeCompression uncompressed;
+
+timeFormat      general;
+
+timePrecision   6;
+
+adjustTimeStep  yes;
+
+runTimeModifiable yes;
+
+maxDeltaT	1e-2; //1 month
+
+//- for Picard time step control
+timeStepControl Picard;
+dTFactIncrease  1.1;
+dTFactDecrease  0.9;
+
+//- for h variation time step control
+//timeStepControl dthetamax;
+//dthetamax           0.01;
+
+processorField1
+{
+    // Mandatory entries (unmodifiable)
+    type            processorField;
+    libs            (fieldFunctionObjects);
+
+    // Optional (inherited) entries
+    region          region0;
+    enabled         true;
+    log             true;
+    timeStart       0;
+    timeEnd         5000;
+    executeControl  timeStep;
+    executeInterval 1;
+    writeControl    writeTime;
+    writeInterval   -1;
+
+}
+
+OptimisationSwitches
+{
+
+    //- Parallel IO file handler
+    // uncollated (default), collated or masterUncollated
+    fileHandler uncollated;
+
+    //- collated: thread buffer size for queued file writes.
+    // If set to 0 or not sufficient for the file size threading is not used.
+    // Default: 2e9
+    maxThreadFileBufferSize 2e9;
+
+    //- masterUncollated: non-blocking buffer size.
+    // If the file exceeds this buffer size scheduled transfer is used.
+    // Default: 2e9
+    maxMasterFileBufferSize 2e9;
+}
+
+
+// ************************************************************************* //

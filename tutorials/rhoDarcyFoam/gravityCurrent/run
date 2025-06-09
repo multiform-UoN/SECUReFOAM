@@ -1,0 +1,16 @@
+#!/bin/sh
+
+# Source tutorial run functions
+. $WM_PROJECT_DIR/bin/tools/RunFunctions
+
+restore0Dir
+
+runApplication blockMesh
+#runApplication checkMesh
+
+# run simulation
+#cp 0/h.org 0/h
+#cp 0/C.org 0/C
+#cp 0/Utheta.org 0/Utheta
+
+#runApplication rhoDarcyFoam

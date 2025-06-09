@@ -1,0 +1,14 @@
+// REMEMBER TO CHANGE Lx IN setExprFieldsDict
+
+// Domain dimensions
+Lz 1;
+Lx 15;
+// Tilted domain: e_g = -sin(theta)*e_x -cos(theta)*e_z
+angle 0.0; // In degrees
+
+// Domain discretization
+Nz 250;
+Nx 3750;
+
+// Rayleigh number
+Ra 1000;
