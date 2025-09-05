@@ -156,7 +156,8 @@ volScalarField Ss
 );
 
 //- Read permeability
-Info << endl << "Reading permeability field K" << endl;
+// ORIGINAL
+/*Info << endl << "Reading permeability field K" << endl;
 const volSymmTensorField K
 (
     IOobject
@@ -176,6 +177,20 @@ const volSymmTensorField K
       *
       symmTensor::I
     )
+);*/
+// EUGENIO
+Info << endl << "Reading permeability field K" << endl;
+const volSymmTensorField K
+(
+    IOobject
+    (
+        "K",
+        runTime.timeName(),
+        mesh,
+        IOobject::READ_IF_PRESENT,
+        IOobject::AUTO_WRITE
+    ),
+    mesh
 );
 
 surfaceSymmTensorField Mf

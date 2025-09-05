@@ -13,8 +13,7 @@ EXE_LIBS = \
     -lmeshTools \
     -lsampling  \
     -L$(FOAM_USER_LIBBIN) \
-    -lmultiformFoam \
     -ldarcyBoundaryConditions \
     -ldensityModels \
     -lviscosityModels
-    
+    # -lmultiformFoam \
